@@ -21,7 +21,7 @@ describe Oystercard do
 
   context 'deduct method' do
     it 'allows the balance to be decucted' do
-      expect{subject.deduct(5)}.to change {subject.balance}.by -5
+      expect{subject.send(:deduct)}.to change {subject.balance}.by -(Oystercard::MINIMUM_CHARGE)
     end
   end
 
@@ -54,6 +54,12 @@ describe Oystercard do
       subject.touch_in
       subject.touch_out
       expect(subject).not_to be_in_journey
+    end
+
+    it 'checks if the deduction is made ' do
+      subject.top_up(10)
+      subject.touch_in
+      expect{subject.touch_out}.to change {subject.balance}.by -(Oystercard::MINIMUM_CHARGE)
     end
   end
   
