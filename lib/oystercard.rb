@@ -17,26 +17,24 @@ MINIMUM_CHARGE = 3
 
 
   def in_journey?
-    @in_journey = in_journey
+    !!@entry_station
   end
 
-def touch_in(entry_station)
-  fail "You need to top-up first" if @balance < 1
-  @in_journey = true
-  @entry_station = entry_station
-end
+  def touch_in(entry_station)
+    fail "You need to top-up first" if @balance < 1
+    @entry_station = true
+  end
 
-def touch_out
-  deduct(MINIMUM_CHARGE)
-  @in_journey = false
-  @entry_station = nil
-end
+  def touch_out
+    deduct(MINIMUM_CHARGE)
+    @entry_station = nil
+  end
 
 private 
 
-def deduct(fare = MINIMUM_CHARGE)
-  @balance -= fare
-end
+  def deduct(fare = MINIMUM_CHARGE)
+    @balance -= fare
+  end
 
   
 end

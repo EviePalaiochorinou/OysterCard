@@ -29,7 +29,8 @@ describe Oystercard do
   context 'touch in method' do
     it 'checks that the user is in journey' do
       subject.top_up(50)
-      expect(subject.touch_in(station)).to eq true
+      subject.touch_in(station)
+      expect(subject.in_journey?).to eq true
     end
 
     it "can touch in" do
@@ -39,8 +40,9 @@ describe Oystercard do
     end
 
     it 'checks it card remembers entry station' do
+      subject.top_up(50)
       subject.touch_in(station)
-      expect{subject.touch_in(station)}.to eq entry_station
+      expect(subject.entry_station).to eq true
     end
   end
 
@@ -52,7 +54,8 @@ describe Oystercard do
 
   context 'touch out method' do
     it 'checks that the user is not in journey' do
-      expect(subject.touch_out).to eq false
+      subject.touch_out
+      expect(subject.in_journey?).to eq false
     end
 
     it "can touch out" do
