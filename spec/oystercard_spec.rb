@@ -2,6 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
   let(:station) { double :entry_station }
+  let(:exitstation) { double :exit_station }
+
 
   context 'Checks basic features of oystercard' do
     it 'should have a balance' do
@@ -42,7 +44,7 @@ describe Oystercard do
     it 'checks it card remembers entry station' do
       subject.top_up(50)
       subject.touch_in(station)
-      expect(subject.entry_station).to eq true
+      expect(subject.entry_station).to be_truthy
     end
   end
 
@@ -54,21 +56,28 @@ describe Oystercard do
 
   context 'touch out method' do
     it 'checks that the user is not in journey' do
-      subject.touch_out
+      subject.touch_out(exitstation)
       expect(subject.in_journey?).to eq false
     end
 
     it "can touch out" do
       subject.top_up(50)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(exitstation)
       expect(subject).not_to be_in_journey
+    end
+
+    it 'checks whether it can remember the exit station' do
+      subject.top_up(50)
+      subject.touch_in(station)
+      subject.touch_out(exitstation)
+      expect { subject.touch_out(exitstation) }.to change{subject.journeys.length}.by(1)
     end
 
     it 'checks if the deduction is made ' do
       subject.top_up(10)
       subject.touch_in(station)
-      expect{subject.touch_out}.to change {subject.balance}.by -(Oystercard::MINIMUM_CHARGE)
+      expect{subject.touch_out(exitstation)}.to change {subject.balance}.by -(Oystercard::MINIMUM_CHARGE)
     end
   end
   
