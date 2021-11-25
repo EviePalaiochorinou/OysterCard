@@ -9,6 +9,10 @@ describe Oystercard do
     it 'should have a balance' do
       expect(subject).to respond_to(:balance)
     end
+
+    it 'checks the default journey history is empty' do
+      expect(subject.journeys.length).to eq 0
+    end
   end
 
   context 'how top-up works' do
