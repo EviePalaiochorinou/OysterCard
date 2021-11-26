@@ -2,7 +2,7 @@ class JourneyLog
 
   def initialize
     @journeys = []
-    @current_journey = {}
+    @current_journey = nil
   end
 
   def start(entry_station)
@@ -10,7 +10,6 @@ class JourneyLog
   end
 
   def finish(exit_station)
-    @current_journey[out] = exit_station
     @journeys << {in: @current_journey.entry_station, out: @current_journey.exit_station}
   end
 
